@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
         tv.setText(stringFromJNI("da"));
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.timg);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.aaa);
         String result = getSaveLocation() + "/compress1.png";
         long time = System.currentTimeMillis();
         int qu = 40;
