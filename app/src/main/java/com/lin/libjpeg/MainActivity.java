@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.io.File;
@@ -28,13 +29,19 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
         tv.setText(stringFromJNI("da"));
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.youzi);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.timg);
         String result = getSaveLocation() + "/compress1.png";
-        nativeCompressBitmap(bitmap, 0, result);
-        compressByDefault(bitmap);
+        long time = System.currentTimeMillis();
+        int qu = 40;
+        nativeCompressBitmap(bitmap, qu, result);
+        Log.e("C_TAG", "NAtive" + (System.currentTimeMillis() - time));
+        time = System.currentTimeMillis();
+        compressByDefault(bitmap,qu);
+        Log.e("C_TAG", "Java" + (System.currentTimeMillis() - time));
+
     }
 
-    private void compressByDefault(Bitmap bitmap) {
+    private void compressByDefault(Bitmap bitmap,int quality) {
         File file = new File(getSaveLocation() + "/compress2.png");
         if (file.exists()) {
             try {
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         }
         try {
             OutputStream stream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
